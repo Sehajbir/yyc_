@@ -1,0 +1,370 @@
+/* =====================================================================
+   YYC Strip Board — electronic flight-strip board styling
+   Mimics the classic tower/terminal strip display look:
+   grey panels, black strip gridlines, cyan callsigns, yellow/orange tags.
+   ===================================================================== */
+
+:root {
+  --gutter:        #c6c6c6;   /* light grey between panels            */
+  --panel-body:    #666666;   /* empty panel background               */
+  --panel-header:  #7c7c7c;   /* header bar                           */
+  --strip-bg:      #555555;   /* flight strip background              */
+  --grid-line:     #000000;   /* strip cell separators                */
+  --txt:           #e6e6e6;   /* normal strip text                    */
+  --txt-dim:       #8e8e8e;   /* placeholder text (RWY / HDG / ALT)   */
+  --callsign:      #68c8de;   /* cyan callsign                        */
+  --tag-yellow:    #eded00;   /* FLOW tag                             */
+  --orange:        #ff8a00;   /* orange annotations                   */
+  --btn-face:      #d2d2d2;   /* header push-buttons                  */
+  --mono: ui-monospace, "Cascadia Mono", Consolas, Menlo,
+          "DejaVu Sans Mono", "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--gutter);
+  font-family: var(--mono);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------- active runway bar ------------------------- */
+
+.rwbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  height: 26px;
+  padding: 0 8px;
+  background: var(--panel-header);
+  border-bottom: 1px solid #3e3e3e;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+.rwbar__value {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  background: #c8c8c8;
+  border: 1px solid #3c3c3c;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #8a8a8a;
+  color: #111111;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.rwbar__spacer { flex: 1 1 auto; }
+
+/* simulation play/stop button */
+.sim-btn .sim-stop { display: none; }
+.sim-btn[aria-pressed="true"] .sim-play { display: none; }
+.sim-btn[aria-pressed="true"] .sim-stop { display: block; }
+
+/* ------------------------- calling highlights ------------------------- */
+/* PL strip flashing = plane calling for clearance (yellow)
+   CL strip flashing = plane calling for pushback (orange) */
+.strip--calling {
+  box-shadow: inset 0 0 0 2px var(--tag-yellow);
+  animation: call-flash-y 1.1s infinite;
+}
+
+.strip--calling[data-call="pushback"] {
+  box-shadow: inset 0 0 0 2px var(--orange);
+  animation: call-flash-o 1.1s infinite;
+}
+
+@keyframes call-flash-y {
+  0%, 100% { background: var(--strip-bg); }
+  50% { background: #8f7a1e; }
+}
+
+@keyframes call-flash-o {
+  0%, 100% { background: var(--strip-bg); }
+  50% { background: #8a5a20; }
+}
+
+/* APR 1 strip flashing = ready to taxi (green) */
+.strip--calling[data-call="taxi"] {
+  box-shadow: inset 0 0 0 2px #46d95f;
+  animation: call-flash-g 1.1s infinite;
+}
+
+@keyframes call-flash-g {
+  0%, 100% { background: var(--strip-bg); }
+  50% { background: #2f6b3a; }
+}
+
+/* ---------------------------- board layout ---------------------------- */
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(300px, 34fr) minmax(300px, 34.5fr) minmax(280px, 31.5fr);
+  gap: 3px;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--gutter);
+}
+
+.stack {
+  display: grid;
+  grid-template-rows: minmax(0, 74fr) minmax(0, 26fr);
+  gap: 3px;
+  min-height: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--panel-body);
+}
+
+/* ---------------------------- panel header ---------------------------- */
+
+.panel__header {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  height: 28px;
+  background: var(--panel-header);
+  border-bottom: 1px solid #3e3e3e;
+  color: #ffffff;
+  font-size: 13px;
+  user-select: none;
+}
+
+.panel__title {
+  display: flex;
+  align-items: center;
+  min-width: 56px;
+  padding: 0 8px;
+  letter-spacing: 1px;
+  white-space: pre;
+}
+
+.panel__title--wide { min-width: 72px; }
+
+.panel__count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  letter-spacing: 1px;
+}
+
+.panel__spacer { flex: 1 1 auto; }
+
+/* header push-buttons (EARLY DEP / SORT) */
+.hdr-btn {
+  align-self: center;
+  margin: 0 3px;
+  padding: 2px 9px;
+  font: 12px/1.4 var(--mono);
+  letter-spacing: .5px;
+  color: #111111;
+  background: var(--btn-face);
+  border: 1px solid #3c3c3c;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #8a8a8a;
+  cursor: pointer;
+}
+
+.hdr-btn:active,
+.hdr-btn[aria-pressed="true"] {
+  background: #b8b8b8;
+  box-shadow: inset 1px 1px 0 #8a8a8a, inset -1px -1px 0 #ffffff;
+}
+
+/* header icon buttons (scissors / printer) */
+.icon-btn {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 21px;
+  margin: 0 3px;
+  color: #ffffff;
+  background: #9b9b9b;
+  border: 1px solid #444444;
+  box-shadow: inset 1px 1px 0 #c4c4c4, inset -1px -1px 0 #6e6e6e;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+  background: #8a8a8a;
+  box-shadow: inset 1px 1px 0 #6e6e6e, inset -1px -1px 0 #c4c4c4;
+}
+
+.hdr-btn:focus-visible,
+.icon-btn:focus-visible {
+  outline: 1px dotted #ffffff;
+  outline-offset: -3px;
+}
+
+/* ---------------------------- panel body ---------------------------- */
+
+.panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--panel-body);
+  scrollbar-color: #a6a6a6 #d9d9d9;           /* Firefox */
+}
+
+.panel__body::-webkit-scrollbar { width: 14px; }
+.panel__body::-webkit-scrollbar-track { background: #d9d9d9; }
+.panel__body::-webkit-scrollbar-thumb {
+  background: #a6a6a6;
+  border: 1px solid #808080;
+}
+
+/* ---------------------------- flight strips ---------------------------- */
+
+.strip {
+  display: flex;
+  align-items: stretch;
+  background: var(--strip-bg);
+  border: 1px solid var(--grid-line);
+  margin: 0 0 -1px 0;          /* collapse shared gridlines */
+  width: max-content;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-height: 44px;
+  padding: 3px 4px;
+  border-right: 1px solid var(--grid-line);
+  color: var(--txt);
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.cell:last-child { border-right: none; }
+
+/* --- column widths per strip flavour --- */
+.strip--dep .cell--gate     { width: 30px; align-items: center; }
+.strip--dep .cell--dest     { width: 38px; }
+.strip--dep .cell--callsign { width: 88px; }
+.strip--dep .cell--blank    { width: 18px; }
+.strip--dep .cell--fix      { width: 50px; }
+.strip--dep .cell--rwy      { width: 28px; }
+.strip--dep .cell--sidholder{ width: 28px; }
+.strip--dep .cell--action   { width: 30px; align-items: center; }
+
+.strip--apr .cell--seq      { width: 30px; }
+.strip--apr .cell--origin   { width: 38px; }
+.strip--apr .cell--callsign { width: 92px; }
+.strip--apr .cell--fix      { width: 46px; }
+.strip--apr .cell--rwy      { width: 32px; }
+.strip--apr .cell--sid      { width: 38px; }
+.strip--apr .cell--spot     { width: 36px; }
+
+/* CL strips can be dragged back to PL */
+.strip--draggable { cursor: grab; }
+.strip--draggable:active { cursor: grabbing; }
+.strip.is-dragging { opacity: .45; }
+
+.panel__body.is-drop-target {
+  background: #6e6e6e;
+  box-shadow: inset 0 0 0 2px #d9d9d9;
+}
+
+/* --- cell contents --- */
+
+.gate    { font-size: 12px; }
+.seq-num { font-size: 12px; }
+.seq-label { font-size: 11px; }
+
+.dest { font-size: 11px; }
+.icao { font-size: 11px; }
+.time { font-size: 11px; }
+
+.tag-flow {
+  align-self: flex-start;
+  padding: 0 2px;
+  background: var(--tag-yellow);
+  color: #000000;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.callsign {
+  color: var(--callsign);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.acinfo {
+  display: flex;
+  gap: 5px;
+  color: #d8d8d8;
+  font-size: 11px;
+}
+
+.wake--orange { color: var(--orange); font-weight: 700; }
+
+.fix { font-size: 12px; }
+
+/* assigned spot over a shrunken waypoint */
+.spot-big { color: #ffffff; font-size: 15px; font-weight: 700; }
+.fix-small { color: #c9c9c9; font-size: 9px; }
+
+/* parked strip: spot assigned, disabled, pushed to the right side */
+.strip--parked {
+  margin-left: auto;
+  opacity: .55;
+}
+
+.strip--parked .cell--action { cursor: default; }
+
+.strip--parked .cell--action:hover,
+.strip--parked .cell--action:active { background: transparent; }
+
+.rwy-dim { color: var(--txt-dim); font-size: 11px; }
+.rwy     { color: #ffffff; font-size: 13px; font-weight: 700; }
+.rwy-nc  { color: var(--orange); font-size: 9px; font-weight: 700; }
+
+.sid-assigned { color: #ffffff; font-size: 11px; }
+
+.sid {
+  color: var(--txt-dim);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.sid--orange { color: var(--orange); }
+
+/* next-action column (last column of PL/CL strips): whole cell clickable,
+   opens the EDIT IFR popup */
+.strip--dep .cell--action { cursor: pointer; }
+
+.strip--dep .cell--action:hover { background: #6b6b6b; }
+
+.strip--dep .cell--action:active { background: #4a4a4a; }
+
+.strip--apr:not(.strip--parked) .cell--action { cursor: pointer; }
+
+.strip--apr:not(.strip--parked) .cell--action:hover { background: #6b6b6b; }
+
+.strip--apr:not(.strip--parked) .cell--action:active { background: #4a4a4a; }
+
+.spot { font-size: 11px; }
