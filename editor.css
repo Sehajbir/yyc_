@@ -1,0 +1,175 @@
+/* =====================================================================
+   EDIT IFR clearance popup — modal window mimicking the classic
+   clearance-info editor (title bar, field boxes, button groups).
+   ===================================================================== */
+
+.editor-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.editor {
+  width: 780px;
+  max-width: 96vw;
+  max-height: 92vh;
+  overflow: auto;
+  background: #616161;
+  border: 1px solid #1c1c1c;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font-family: var(--mono);
+}
+
+.editor__titlebar {
+  padding: 3px 8px;
+  background: linear-gradient(90deg, #e8eff8 0%, #8fb2dd 14%, #5d8fcb 60%, #4a7fbd 100%);
+  color: #101418;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.editor__body { padding: 10px 12px 12px; }
+
+.editor__section-label {
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* ------------------------------- fields ------------------------------- */
+
+.editor__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.editor__row2 { margin-top: 12px; align-items: flex-start; }
+
+.editor__row3 { margin-top: 12px; align-items: stretch; }
+
+.efield {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.efield__label {
+  color: #ffffff;
+  font-size: 10px;
+  letter-spacing: .5px;
+}
+
+.ebox {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 6px;
+  background: #c8c8c8;
+  border: 1px solid #3a3a3a;
+  color: #111111;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ebox--input  { background: #f4f4f4; font-weight: 400; }
+.ebox--plain  { background: #8f8f8f; }
+.ebox--yellow { background: #f2f200; }
+.ebox--route  { width: 340px; }
+
+/* ------------------------------- groups ------------------------------- */
+
+.egroup {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 12px 6px 6px;
+  border: 1px solid #dcdcdc;
+}
+
+.egroup__label {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 5px;
+  background: #616161;
+  color: #ffffff;
+  font-size: 10px;
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.egroup--sid   { grid-template-columns: repeat(2, minmax(46px, auto)); }
+.egroup--rwy   { grid-template-columns: repeat(4, minmax(30px, auto)); }
+.egroup--loc   { grid-template-columns: repeat(4, minmax(34px, auto)); }
+.egroup--deice { grid-template-columns: repeat(2, minmax(26px, auto)); }
+.egroup--flow  { display: flex; gap: 8px; align-items: flex-end; flex: 1 1 auto; }
+
+/* ------------------------------- buttons ------------------------------- */
+
+.ebtn {
+  padding: 4px 5px;
+  background: #8f8f8f;
+  border: 1px solid #3c3c3c;
+  box-shadow: inset 1px 1px 0 #b9b9b9, inset -1px -1px 0 #5e5e5e;
+  color: #ffffff;
+  font: 10px var(--mono);
+  letter-spacing: .3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ebtn:active {
+  background: #7d7d7d;
+  box-shadow: inset 1px 1px 0 #5e5e5e, inset -1px -1px 0 #b9b9b9;
+}
+
+.ebtn--nc {
+  background: #0d0d0d;
+  border-color: #f0f0f0;
+  box-shadow: none;
+}
+
+/* currently assigned SID / DEP RWY option */
+.ebtn[aria-pressed="true"] {
+  background: #6f6f6f;
+  box-shadow: inset 1px 1px 0 #4a4a4a, inset -1px -1px 0 #c4c4c4;
+  color: #ffff66;
+}
+
+.ebtn--yellow {
+  background: #f2f200;
+  color: #000000;
+  font-weight: 700;
+  padding: 4px 10px;
+}
+
+.ebtn--close { padding: 4px 9px; font-weight: 700; }
+
+.ebtn:focus-visible {
+  outline: 1px dotted #ffffff;
+  outline-offset: -3px;
+}
+
+/* ------------------------------- footer ------------------------------- */
+
+.editor__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.editor__footer .spacer { flex: 1 1 auto; }
+
+.editor__footer-center { display: flex; gap: 10px; }

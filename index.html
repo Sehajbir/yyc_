@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YYC Strip Board</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="editor.css">
+  <link rel="stylesheet" href="spots.css">
+</head>
+<body>
+  <!-- ===================== active runway bar ===================== -->
+  <header class="rwbar">
+    <span class="rwbar__label">ACTIVE RWY</span>
+    <span class="rwbar__value" data-role="rw-value">35L/35R</span>
+    <button class="hdr-btn" data-action="rwy-35" aria-pressed="true">35s</button>
+    <button class="hdr-btn" data-action="rwy-17" aria-pressed="false">17s</button>
+    <button class="icon-btn sim-btn" data-action="sim-toggle" aria-pressed="false" title="Start simulation">
+      <svg class="sim-play" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+        <path fill="currentColor" d="M3 1.5 13.5 8 3 14.5z"></path>
+      </svg>
+      <svg class="sim-stop" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+        <rect fill="currentColor" x="3" y="3" width="10" height="10"></rect>
+      </svg>
+    </button>
+    <span class="rwbar__spacer"></span>
+  </header>
+
+  <main class="board" id="board">
+
+    <!-- ===================== PL (Preference List) ===================== -->
+    <section class="panel" data-panel="PL" aria-label="PL">
+      <header class="panel__header">
+        <span class="panel__title">PL</span>
+        <span class="panel__count" data-role="count">0</span>
+        <button class="icon-btn" data-action="cut" title="Cut strips" aria-label="Cut strips">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round">
+              <circle cx="4.2" cy="12" r="2.1"></circle>
+              <circle cx="11.8" cy="12" r="2.1"></circle>
+              <path d="M5.4 10.3 12.4 2.2"></path>
+              <path d="M10.6 10.3 3.6 2.2"></path>
+            </g>
+          </svg>
+        </button>
+        <button class="hdr-btn" data-action="early-dep" aria-pressed="false">EARLY DEP</button>
+        <button class="hdr-btn" data-action="sort">SORT</button>
+        <button class="hdr-btn" data-action="load-strips" title="Load planned departure strips">LOAD STRIPS</button>
+        <span class="panel__spacer"></span>
+      </header>
+      <div class="panel__body" data-role="body"></div>
+    </section>
+
+    <!-- ===================== CL (Clearance List) ===================== -->
+    <section class="panel" data-panel="CL" aria-label="CL">
+      <header class="panel__header">
+        <span class="panel__title">CL</span>
+        <span class="panel__count" data-role="count">0</span>
+        <span class="panel__spacer"></span>
+      </header>
+      <div class="panel__body" data-role="body"></div>
+    </section>
+
+    <!-- ===================== Right stack: APR 1 / APR TSF ===================== -->
+    <div class="stack">
+      <section class="panel" data-panel="APR1" aria-label="APR 1">
+        <header class="panel__header">
+          <span class="panel__title panel__title--wide">APR 1</span>
+          <span class="panel__count" data-role="count">0</span>
+          <button class="icon-btn" data-action="print" title="Print strips" aria-label="Print strips">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path fill="currentColor" d="M4.5 1.5h7V4h-7zM2.5 4.8h11v4.4h-1.8v5H4.3v-5H2.5zM5.5 8.4h5v3.6h-5z"></path>
+            </svg>
+          </button>
+          <span class="panel__spacer"></span>
+        </header>
+        <div class="panel__body" data-role="body"></div>
+      </section>
+
+      <section class="panel" data-panel="APRTSF" aria-label="APR TSF">
+        <header class="panel__header">
+          <span class="panel__title panel__title--wide">APR TSF</span>
+          <span class="panel__count" data-role="count">0</span>
+          <span class="panel__spacer"></span>
+        </header>
+        <div class="panel__body" data-role="body"></div>
+      </section>
+    </div>
+
+  </main>
+
+  <script src="js/pl-data.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/spots.js"></script>
+</body>
+</html>

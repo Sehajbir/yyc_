@@ -1,0 +1,9 @@
+{
+  "name": "yyc-strip-board",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electronic flight-strip board UI (PL / CL / APR 1 / APR TSF panels)",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
